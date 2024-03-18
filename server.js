@@ -46,6 +46,7 @@ app.get('/api/bug/:bugId', (req, res) => {
             res.status(400).send('Cannot get bug')
         })
 })
+
 app.get('/api/bug/:bugId/remove', (req, res) => {
     console.log('delete....');
     const bugId = req.params.bugId
