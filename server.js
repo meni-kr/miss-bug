@@ -3,7 +3,7 @@ import { bugService } from './services/bug.service.js'
 
 const app = express()
 
-
+app.use(express.static('public'))
  
 
 app.get('/', (req, res) => res.send('my first server'))
@@ -26,7 +26,7 @@ app.get('/api/bug/save', (req, res) => {
         title: req.query.title,
         severity: +req.query.severity,
         description: req.query.description,
-        _id: req.query._id,
+        _id: req.query.bugId,
         createdAt : +req.query.createdAt
     }
     bugService.save(bugToSave)
