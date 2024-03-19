@@ -8,12 +8,21 @@ const app = express()
 
 app.use(express.static('public'))
 app.use(cookieParser())
+app.use(express.json())
 
 // app.get('/', (req, res) => res.send('my first server'))
 
 // get bugs
 app.get('/api/bug', (req, res) => {
-    bugService.query()
+
+    const filterBy = {
+        txt: req.query.txt || '',
+        // description: req.query.description || '',
+        severity: +req.query.severity || 0,
+        // pageIdx: req.query.pageIdx
+    }
+
+    bugService.query(filterBy)
         .then(bugs => {
             res.send(bugs)
         })
@@ -23,18 +32,11 @@ app.get('/api/bug', (req, res) => {
         })
 })
 
-// save / create
-app.get('/api/bug/save', (req, res) => {
+// create Bug
+app.post('/api/bug', (req, res) => {
 
-    loggerService.debug('req.query', req.query)
-
-    const bugToSave = {
-        title: req.query.title,
-        severity: +req.query.severity,
-        description: req.query.description,
-        _id: req.query.bugId,
-        createdAt : +req.query.createdAt
-    }
+    const bugToSave = req.body
+    console.log(bugToSave);
     bugService.save(bugToSave)
         .then(bug => res.send(bug))
         .catch((err) => {
@@ -43,6 +45,24 @@ app.get('/api/bug/save', (req, res) => {
         })
 })
 
+// Update Bug
+app.put('/api/bug', (req, res) => {
+    const bugToSave = {
+        title: req.body.title,
+        severity: +req.body.severity,
+        description: req.body.description,
+        _id: req.body._id,
+        createdAt: +req.body.createdAt
+    }
+    bugService.save(bugToSave)
+        .then(bug => res.send(bug))
+        .catch((err) => {
+            loggerService.error('Cannot Update bug', err)
+            res.status(400).send('Cannot Update bug')
+        })
+})
+
+// Get Bug 
 app.get('/api/bug/:bugId', (req, res) => {
     const bugId = req.params.bugId
 
@@ -64,7 +84,8 @@ app.get('/api/bug/:bugId', (req, res) => {
         })
 })
 
-app.get('/api/bug/:bugId/remove', (req, res) => {
+// remove bug
+app.delete('/api/bug/:bugId', (req, res) => {
     console.log('delete....');
     const bugId = req.params.bugId
     bugService.remove(bugId)

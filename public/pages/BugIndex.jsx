@@ -1,5 +1,6 @@
 
 import { bugService } from '../services/bug.service.js'
+import { utilService } from '../services/util.service.js'
 
 import { BugFilter } from '../cmps/BugFilter.jsx'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
@@ -41,6 +42,8 @@ export function BugIndex() {
     }
 
     function onAddBug() {
+        console.log(bugs);
+        
         const bug = {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
@@ -49,9 +52,10 @@ export function BugIndex() {
         bugService
             .save(bug)
             .then((savedBug) => {
-                console.log('Added Bug', savedBug)
-                setBugs([...bugs, savedBug])
+                console.log('Added Bug', savedBug.data)
                 showSuccessMsg('Bug added')
+                setBugs(prevBugs =>([...prevBugs, savedBug.data]))
+                // loadBugs()
             })
             .catch((err) => {
                 console.log('Error from onAddBug ->', err)
@@ -67,8 +71,9 @@ export function BugIndex() {
             .then((savedBug) => {
                 console.log('Updated Bug:', savedBug)
                 const bugsToUpdate = bugs.map((currBug) =>
-                    currBug._id === savedBug._id ? savedBug : currBug
+                    currBug._id === savedBug.data._id ? savedBug.data : currBug
                 )
+            
                 setBugs(bugsToUpdate)
                 showSuccessMsg('Bug updated')
             })
@@ -77,7 +82,7 @@ export function BugIndex() {
                 showErrorMsg('Cannot update bug')
             })
     }
-
+    console.log(bugs);
     return (
         <main>
             <h3>Bugs App</h3>
