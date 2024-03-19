@@ -1,1 +1,10 @@
 19.3.2024, 15:53:37 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:05:15 - DEBUG - req.query | {"title":"1121","severity":"0","description":"qqww1","bugId":"VjSVV"}
+19.3.2024, 16:08:18 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:09:13 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:09:40 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:13:09 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:13:11 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:13:32 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:14:03 - INFO - Server listening on port http://127.0.0.1:3030/
+19.3.2024, 16:15:00 - INFO - Server listening on port http://127.0.0.1:3030/
