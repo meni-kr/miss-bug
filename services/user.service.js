@@ -1,8 +1,8 @@
 import fs from 'fs'
-// import Cryptr from 'cryptr'
+import Cryptr from 'cryptr'
 import { utilService } from './util.service.js'
 
-// const cryptr = new Cryptr(process.env.SECRET1 ||  'secret-puk-1234')
+const cryptr = new Cryptr(process.env.SECRET1 || 'secret-meni-777')
 const users = utilService.readJsonFile('data/user.json')
 
 export const userService = {
@@ -10,9 +10,9 @@ export const userService = {
     // getById,
     // remove,
     save,
-    // checkLogin,
+    checkLogin,
     getLoginToken,
-    // validateToken
+    validateToken
 }
 
 function save(user) {
@@ -22,12 +22,10 @@ function save(user) {
         fullname: '',
         isAdmin: false,
     }
-    
     user._id = utilService.makeId()
     // TODO: severe security issue- attacker can post admins
     users.push(user)
     return _saveUsersToFile().then(() => user)
-
 }
 
 function getLoginToken(user) {
@@ -36,23 +34,23 @@ function getLoginToken(user) {
     return encryptedStr
 }
 
-// function validateToken(token) {
-//     const str = cryptr.decrypt(token)
-//     const user = JSON.parse(str)
-//     return user
-// }
+function validateToken(token) {
+    const str = cryptr.decrypt(token)
+    const user = JSON.parse(str)
+    return user
+}
 
-// function checkLogin({ username, password }) {
-//     var user = users.find(user => user.username === username)
-//     if (user)  {
-//         user = {
-//             _id : user._id,
-//             fullname : user.fullname,
-//             isAdmin : user.isAdmin,
-//         }
-//     }
-//     return Promise.resolve(user)
-// }
+function checkLogin({ username, password }) {
+    var user = users.find(user => user.username === 'puki') // leter we will add password 
+    if (user) {
+        user = {
+            _id: user._id,
+            fullname: user.fullname,
+            isAdmin: user.isAdmin,
+        }
+    }
+    return Promise.resolve(user)
+}
 
 // function query() {
 //     return Promise.resolve(users)
@@ -68,9 +66,6 @@ function getLoginToken(user) {
 //     users = users.filter(user => user._id !== userId)
 //     return _saveUsersToFile()
 // }
-
-
-
 
 function _saveUsersToFile() {
     return new Promise((resolve, reject) => {

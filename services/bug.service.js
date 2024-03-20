@@ -8,7 +8,7 @@ export const bugService = {
     save
 }
 
-const PAGE_SIZE = 2
+const PAGE_SIZE = 6
 
 const bugs = utilService.readJsonFile('data/bug.json')
 
@@ -64,7 +64,6 @@ function save(bug) {
         bugs[bugIdx] = bug
     } else {
         bug._id = utilService.makeId()
-        // bug.description = utilService.makeLorem()
         bug.createdAt = Date.now()
         bugs.unshift(bug)
     }
