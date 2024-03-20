@@ -1,7 +1,16 @@
 const {useState, useEffect} = React
 
+
+
+// import { LabelSelector } from "./LabelSelect.jsx"
+import { LabelSelector } from './LabelSelect.jsx'
+
+
 export function BugFilter({filterBy, onSetFilter}) {
   const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
+
+
+  const labels = ['critical', 'CR', 'dev-branch', 'popular', 'high']
 
   useEffect(() => {
     onSetFilter(filterByToEdit)
@@ -18,16 +27,15 @@ export function BugFilter({filterBy, onSetFilter}) {
     onSetFilter(filterByToEdit)
   }
 
-  // ! DRY!. WE WILL NEVER REPEAT OUR SELVES
-  // function handleTxtChange({ target }) {
-  //     const value = target.value
-  //     setFilterByToEdit((prevFilterBy) => ({ ...prevFilterBy, txt: value }))
-  // }
+  function onLabelChange(selectedLabels) {
 
-  // function handleMinSpeedChange({ target }) {
-  //     const value = target.value
-  //     setFilterByToEdit((prevFilterBy) => ({ ...prevFilterBy, minSpeed: value }))
-  // }
+		setFilterByToEdit(prevFilter => ({
+			...prevFilter,
+			labels: selectedLabels,
+		}))
+	}
+
+ 
 
   const {txt, severity} = filterByToEdit
   return (
@@ -57,6 +65,9 @@ export function BugFilter({filterBy, onSetFilter}) {
 
         <button>Filter Bugs</button>
       </form>
+      <LabelSelector labels={labels} onLabelChange={onLabelChange}/>
+
+      {/* <LabelSelector labels={labels} onLabelChange={onLabelChange} /> */}
     </section>
   )
 }

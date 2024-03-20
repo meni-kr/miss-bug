@@ -1,11 +1,7 @@
 
-import { storageService } from './async-storage.service.js'
-import { utilService } from './util.service.js'
-
-const STORAGE_KEY = 'bugDB'
 const BASE_URL = '/api/bug/'
 
-_createBugs()
+
 
 export const bugService = {
     query,
@@ -17,9 +13,10 @@ export const bugService = {
 }
 
 
-function query(filterBy={}) {
-    // return axios.get(BASE_URL).then(res => res.data)
-    return axios.get(BASE_URL, { params: filterBy })
+function query(filterBy, sortBy) {
+    const queryParams = { ...filterBy, ...sortBy }
+    
+    return axios.get(BASE_URL, { params: queryParams })
         .then(res => res.data)
         
 }
@@ -46,7 +43,12 @@ function save(bug) {
 }
 
 function getDefaultFilter() {
-    return { txt: '', severity: '' }
+    return { 
+        txt: '', 
+        minSeverity: 0, 
+        labels: '', 
+        pageIdx: 0 
+    }
 }
 
 function getFilterFromParams(searchParams = {}) {
@@ -63,35 +65,3 @@ function getEmptyBug(title= '',description= '',severity= '') {
 }
 
 
-function _createBugs() {
-    let bugs = utilService.loadFromStorage(STORAGE_KEY)
-    if (!bugs || !bugs.length) {
-        bugs = [
-            {
-                title: "Infinite Loop Detected",
-                severity: 4,
-                description: 'cant stop this',
-                _id: "1NF1N1T3"
-            },
-            {
-                title: "Keyboard Not Found",
-                severity: 3,
-                description: 'where is it?',
-                _id: "K3YB0RD"
-            },
-            {
-                title: "404 Coffee Not Found",
-                severity: 2,
-                description: 'Errorrr',
-                _id: "C0FF33"
-            },
-            {
-                title: "Unexpected Response",
-                severity: 1,
-                description: 'that not the druids you looking for',
-                _id: "G0053"
-            }
-        ]
-        utilService.saveToStorage(STORAGE_KEY, bugs)
-    }
-}
